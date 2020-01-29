@@ -2,6 +2,7 @@ const { buildSchema } = require("graphql");
 const Koa = require("koa");
 const mount = require("koa-mount");
 const graphqlHTTP = require("koa-graphql");
+const cors = require("@koa/cors");
 const { fetchList, fetchStory } = require("./data");
 
 const PORT = process.env.PORT || 3000;
@@ -48,6 +49,8 @@ const root = {
 };
 
 const app = new Koa();
+
+app.use(cors());
 
 app.use(
   mount(
