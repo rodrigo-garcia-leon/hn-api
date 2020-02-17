@@ -6,13 +6,15 @@
   "scripts": {
     "start": "node src/server.js",
     "start:dev": "NODE_ENV=dev npm run start",
+    "start:docker": "docker run rodrigogarcialeon/hn-api --env NODE_ENV=dev",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "format": "npm run format:eslint && npm run format:prettier",
     "lint:eslint": "eslint .",
     "format:eslint": "eslint --fix .",
     "lint:prettier": "prettier --check '**/*.js'",
     "format:prettier": "prettier --write '**/*.js'",
-    "build": "docker build -t rodrigogarcialeon/hn-api ."
+    "build": "docker build -t rodrigogarcialeon/hn-api .",
+    "push": "docker push rodrigogarcialeon/hn-api"
   },
   "author": "",
   "license": "ISC",
