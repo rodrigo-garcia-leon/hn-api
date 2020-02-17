@@ -5,6 +5,6 @@ Hacker News API using GraphQL
 ## todo
 
 - [ ] circleci?
-- [ ] fix cors
+- [x] fix cors
 - [ ] tests
 - [ ] node process manager for resilience?
