@@ -51,7 +51,7 @@ const root = {
 const app = new Koa();
 
 const ACCESS_CONTROL_ALLOW_ORIGIN_DEV = "http://localhost";
-const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = "https://hn-app/rodrigogarcia.me";
+const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = "https://react-hnpwa.rodrigogarcia.me";
 
 app.use(
   cors({
