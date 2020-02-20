@@ -9,3 +9,4 @@ Hacker News API using GraphQL
 - [ ] tests
 - [ ] node process manager for resilience?
 - [x] use yarn in dockerfile
+- [ ] move story memo to server.js
