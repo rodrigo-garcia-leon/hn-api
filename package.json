@@ -14,7 +14,8 @@
     "lint:prettier": "prettier --check '**/*.js'",
     "format:prettier": "prettier --write '**/*.js'",
     "build": "docker build -t rodrigogarcialeon/hn-api .",
-    "push": "docker push rodrigogarcialeon/hn-api"
+    "push": "docker push rodrigogarcialeon/hn-api",
+    "release": "npm run build && npm run push"
   },
   "author": "",
   "license": "ISC",
