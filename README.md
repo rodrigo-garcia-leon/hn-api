@@ -8,4 +8,4 @@ Hacker News API using GraphQL
 - [x] fix cors
 - [ ] tests
 - [ ] node process manager for resilience?
-- [ ] use yarn in dockerfile
+- [x] use yarn in dockerfile

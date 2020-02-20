@@ -50,15 +50,20 @@ const root = {
 
 const app = new Koa();
 
-const ACCESS_CONTROL_ALLOW_ORIGIN_DEV  = 'http://localhost';
-const ACCESS_CONTROL_ALLOW_ORIGIN_PRD  = 'https://hn-app/rodrigogarcia.me';
+const ACCESS_CONTROL_ALLOW_ORIGIN_DEV = "http://localhost";
+const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = "https://hn-app/rodrigogarcia.me";
 
-app.use(cors({
-  'Access-Control-Allow-Origin': process.env.NODE_ENV === 'PRD' ? ACCESS_CONTROL_ALLOW_ORIGIN_PRD : ACCESS_CONTROL_ALLOW_ORIGIN_DEV
-}));
+app.use(
+  cors({
+    "Access-Control-Allow-Origin":
+      process.env.NODE_ENV === "PRD"
+        ? ACCESS_CONTROL_ALLOW_ORIGIN_PRD
+        : ACCESS_CONTROL_ALLOW_ORIGIN_DEV
+  })
+);
 
 const healthCheck = new Koa();
-healthCheck.use(async function (ctx, next) {
+healthCheck.use(async function(ctx, next) {
   await next();
   ctx.status = 200;
 });
@@ -73,6 +78,6 @@ app.use(
     })
   )
 );
-app.use(mount('/', healthCheck));
+app.use(mount("/", healthCheck));
 
 app.listen(PORT);
