@@ -10,10 +10,10 @@
     "debug": "NODE_OPTIONS=--inspect-brk NODE_ENV=dev node src/server.js",
     "lint": "npm run lint:eslint && npm run lint:prettier",
     "format": "npm run format:eslint && npm run format:prettier",
-    "lint:eslint": "eslint .",
-    "format:eslint": "eslint --fix .",
-    "lint:prettier": "prettier --check '**/*.js'",
-    "format:prettier": "prettier --write '**/*.js'",
+    "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
+    "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
+    "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
+    "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore",
     "build": "docker build -t rodrigogarcialeon/hn-api .",
     "push": "docker push rodrigogarcialeon/hn-api",
     "release": "npm run build && npm run push"
@@ -29,8 +29,31 @@
     "node-fetch": "^2.6.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^6.1.0",
     "jest": "^25.1.0",
-    "prettier": "^1.19.1"
+    "prettier": "^1.19.1",
+    "@open-wc/eslint-config": "^2.0.0",
+    "@open-wc/prettier-config": "^0.1.10",
+    "husky": "^1.0.0",
+    "lint-staged": "^8.0.0"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@open-wc/eslint-config",
+      "eslint-config-prettier"
+    ]
+  },
+  "prettier": "@open-wc/prettier-config",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
