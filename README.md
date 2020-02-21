@@ -4,9 +4,8 @@ Hacker News API using GraphQL
 
 ## todo
 
-- [ ] circleci?
+- [ ] use github actions
 - [x] fix cors
 - [ ] tests
-- [ ] node process manager for resilience?
 - [x] use yarn in dockerfile
 - [x] move story memo to server.js
