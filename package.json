@@ -5,18 +5,18 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/server.js",
-    "start:dev": "NODE_ENV=dev npm run start",
+    "start:dev": "NODE_ENV=dev yarn start",
     "start:docker": "docker run rodrigogarcialeon/hn-api --env NODE_ENV=dev",
     "debug": "NODE_OPTIONS=--inspect-brk NODE_ENV=dev node src/server.js",
-    "lint": "npm run lint:eslint && npm run lint:prettier",
-    "format": "npm run format:eslint && npm run format:prettier",
+    "lint": "yarn lint:eslint && yarn lint:prettier",
+    "format": "yarn format:eslint && yarn format:prettier",
     "lint:eslint": "eslint --ext .js,.html . --ignore-path .gitignore",
     "format:eslint": "eslint --ext .js,.html . --fix --ignore-path .gitignore",
     "lint:prettier": "prettier \"**/*.js\" --check --ignore-path .gitignore",
     "format:prettier": "prettier \"**/*.js\" --write --ignore-path .gitignore",
     "build": "docker build -t rodrigogarcialeon/hn-api .",
     "push": "docker push rodrigogarcialeon/hn-api",
-    "release": "npm run build && npm run push"
+    "release": "yarn build && yarn push"
   },
   "author": "",
   "license": "ISC",
