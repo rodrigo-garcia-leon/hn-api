@@ -5,7 +5,32 @@ const graphqlHTTP = require("koa-graphql");
 const cors = require("@koa/cors");
 const { fetchList, fetchStory } = require("./data");
 
-const PORT = process.env.PORT || 3000;
+const app = new Koa();
+
+// cors
+const ACCESS_CONTROL_ALLOW_ORIGIN_DEV = "http://localhost";
+const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = "https://react-hnpwa.rodrigogarcia.me";
+
+app.use(
+  cors({
+    "Access-Control-Allow-Origin":
+      process.env.NODE_ENV === "PRD"
+        ? ACCESS_CONTROL_ALLOW_ORIGIN_PRD
+        : ACCESS_CONTROL_ALLOW_ORIGIN_DEV
+  })
+);
+
+// health check
+const healthCheck = new Koa();
+
+healthCheck.use(async function(ctx, next) {
+  await next();
+  ctx.status = 200;
+});
+
+app.use(mount("/", healthCheck));
+
+// graphql
 const PAGE_SIZE = 30;
 
 const schema = buildSchema(`
@@ -48,26 +73,6 @@ const root = {
   story: async ({ id }) => fetchStory(id)
 };
 
-const app = new Koa();
-
-const ACCESS_CONTROL_ALLOW_ORIGIN_DEV = "http://localhost";
-const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = "https://react-hnpwa.rodrigogarcia.me";
-
-app.use(
-  cors({
-    "Access-Control-Allow-Origin":
-      process.env.NODE_ENV === "PRD"
-        ? ACCESS_CONTROL_ALLOW_ORIGIN_PRD
-        : ACCESS_CONTROL_ALLOW_ORIGIN_DEV
-  })
-);
-
-const healthCheck = new Koa();
-healthCheck.use(async function(ctx, next) {
-  await next();
-  ctx.status = 200;
-});
-
 app.use(
   mount(
     "/graphql",
@@ -78,6 +83,6 @@ app.use(
     })
   )
 );
-app.use(mount("/", healthCheck));
 
+const PORT = process.env.PORT || 3000;
 app.listen(PORT);
