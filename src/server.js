@@ -1,23 +1,23 @@
-const { buildSchema } = require("graphql");
-const Koa = require("koa");
-const mount = require("koa-mount");
-const graphqlHTTP = require("koa-graphql");
-const cors = require("@koa/cors");
-const { fetchList, fetchStory } = require("./data");
+const { buildSchema } = require('graphql');
+const Koa = require('koa');
+const mount = require('koa-mount');
+const graphqlHTTP = require('koa-graphql');
+const cors = require('@koa/cors');
+const { fetchList, fetchStory } = require('./data');
 
 const app = new Koa();
 
 // cors
-const ACCESS_CONTROL_ALLOW_ORIGIN_DEV = "http://localhost";
-const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = "https://react-hnpwa.rodrigogarcia.me";
+const ACCESS_CONTROL_ALLOW_ORIGIN_DEV = 'http://localhost';
+const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = 'https://react-hnpwa.rodrigogarcia.me';
 
 app.use(
   cors({
-    "Access-Control-Allow-Origin":
-      process.env.NODE_ENV === "PRD"
-        ? ACCESS_CONTROL_ALLOW_ORIGIN_PRD
-        : ACCESS_CONTROL_ALLOW_ORIGIN_DEV
-  })
+    'Access-Control-Allow-Origin':
+      process.env.NODE_ENV === 'dev'
+        ? ACCESS_CONTROL_ALLOW_ORIGIN_DEV
+        : ACCESS_CONTROL_ALLOW_ORIGIN_PRD,
+  }),
 );
 
 // health check
@@ -28,7 +28,7 @@ healthCheck.use(async function(ctx, next) {
   ctx.status = 200;
 });
 
-app.use(mount("/", healthCheck));
+app.use(mount('/', healthCheck));
 
 // graphql
 const PAGE_SIZE = 30;
@@ -59,20 +59,20 @@ const schema = buildSchema(`
 const storyMemo = {};
 
 const root = {
-  list: async function ({ id, page }) {
+  list: async function({ id, page }) {
     const kids = await fetchList(id);
     const pageStart = (page - 1) * PAGE_SIZE;
     const pageEnd = page * PAGE_SIZE;
 
     const stories = await Promise.all(
-      kids.slice(pageStart, pageEnd).map(storyId => this.story({ id: storyId }))
+      kids.slice(pageStart, pageEnd).map(storyId => this.story({ id: storyId })),
     );
 
     return {
-      stories
+      stories,
     };
   },
-  story: async function ({ id }) {
+  story: async function({ id }) {
     if (Object.keys(storyMemo).includes(id.toString())) {
       return storyMemo[id];
     }
@@ -80,18 +80,18 @@ const root = {
     const result = await fetchStory(id);
     storyMemo[id] = result;
     return result;
-  }
+  },
 };
 
 app.use(
   mount(
-    "/graphql",
+    '/graphql',
     graphqlHTTP({
       schema,
       rootValue: root,
-      graphiql: true
-    })
-  )
+      graphiql: true,
+    }),
+  ),
 );
 
 const PORT = process.env.PORT || 3000;
