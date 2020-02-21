@@ -56,21 +56,31 @@ const schema = buildSchema(`
   }
 `);
 
+const storyMemo = {};
+
 const root = {
-  list: async ({ id, page }) => {
+  list: async function ({ id, page }) {
     const kids = await fetchList(id);
     const pageStart = (page - 1) * PAGE_SIZE;
     const pageEnd = page * PAGE_SIZE;
 
     const stories = await Promise.all(
-      kids.slice(pageStart, pageEnd).map(async id => fetchStory(id))
+      kids.slice(pageStart, pageEnd).map(storyId => this.story({ id: storyId }))
     );
 
     return {
       stories
     };
   },
-  story: async ({ id }) => fetchStory(id)
+  story: async function ({ id }) {
+    if (Object.keys(storyMemo).includes(id.toString())) {
+      return storyMemo[id];
+    }
+
+    const result = await fetchStory(id);
+    storyMemo[id] = result;
+    return result;
+  }
 };
 
 app.use(
