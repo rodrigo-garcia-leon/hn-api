@@ -9,3 +9,4 @@ Hacker News API using GraphQL
 - [ ] tests
 - [x] use yarn in dockerfile
 - [x] move story memo to server.js
+- [ ] check cors
