@@ -23,7 +23,7 @@ app.use(
 // health check
 const healthCheck = new Koa();
 
-healthCheck.use(async function(ctx, next) {
+healthCheck.use(async (ctx, next) => {
   await next();
   ctx.status = 200;
 });
@@ -59,7 +59,7 @@ const schema = buildSchema(`
 const storyMemo = {};
 
 const root = {
-  list: async function({ id, page }) {
+  async list({ id, page }) {
     const kids = await fetchList(id);
     const pageStart = (page - 1) * PAGE_SIZE;
     const pageEnd = page * PAGE_SIZE;
@@ -72,7 +72,7 @@ const root = {
       stories,
     };
   },
-  story: async function({ id }) {
+  async story({ id }) {
     if (Object.keys(storyMemo).includes(id.toString())) {
       return storyMemo[id];
     }

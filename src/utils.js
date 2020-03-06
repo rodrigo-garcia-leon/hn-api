@@ -1,4 +1,4 @@
-const fetch = require("node-fetch");
+const fetch = require('node-fetch');
 
 const fetchItem = async url => {
   let json;
@@ -7,6 +7,7 @@ const fetchItem = async url => {
     const response = await fetch(url);
     json = await response.json();
   } catch (error) {
+    // eslint-disable-next-line
     console.error(error);
   }
 
@@ -14,5 +15,5 @@ const fetchItem = async url => {
 };
 
 module.exports = {
-  fetchItem
+  fetchItem,
 };
