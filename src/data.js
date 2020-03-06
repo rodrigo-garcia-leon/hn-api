@@ -1,4 +1,4 @@
-const { fetchItem } = require('./utils');
+const { fetchItem } = require('./network');
 
 const BASE_URL = 'https://hacker-news.firebaseio.com/v0/';
 

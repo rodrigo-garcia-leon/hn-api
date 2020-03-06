@@ -4,7 +4,7 @@
   "description": "Hacker News API using GraphQL",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "node src/app.js",
     "start:dev": "NODE_ENV=dev yarn start",
     "start:docker": "docker run rodrigogarcialeon/hn-api --env NODE_ENV=dev",
     "test": "jest",

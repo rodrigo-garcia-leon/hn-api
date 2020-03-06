@@ -1,7 +1,7 @@
 jest.mock('node-fetch');
 
 const fetch = require('node-fetch');
-const { fetchItem } = require('./utils');
+const { fetchItem } = require('./network');
 
 describe('fetchItem', () => {
   let errorSpy;

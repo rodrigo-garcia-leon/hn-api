@@ -26,6 +26,7 @@ const healthCheck = new Koa();
 healthCheck.use(async (ctx, next) => {
   await next();
   ctx.status = 200;
+  // console.log(ctx);
 });
 
 app.use(mount('/', healthCheck));
@@ -95,5 +96,15 @@ app.use(
   ),
 );
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT);
+function run() {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT);
+}
+
+if (require.main === module) {
+  run();
+}
+
+module.exports = {
+  app,
+};
