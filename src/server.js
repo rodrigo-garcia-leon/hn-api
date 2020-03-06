@@ -1,6 +1,6 @@
-const { buildSchema } = require('graphql');
 const Koa = require('koa');
 const mount = require('koa-mount');
+const { buildSchema } = require('graphql');
 const graphqlHTTP = require('koa-graphql');
 const cors = require('@koa/cors');
 const { fetchList, fetchStory } = require('./data');
@@ -9,7 +9,7 @@ const app = new Koa();
 
 // cors
 const ACCESS_CONTROL_ALLOW_ORIGIN_DEV = 'http://localhost';
-const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = 'https://react-hnpwa.rodrigogarcia.me';
+const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = 'https://hn-app.rodrigogarcia.me';
 
 app.use(
   cors({
@@ -79,6 +79,7 @@ const root = {
 
     const result = await fetchStory(id);
     storyMemo[id] = result;
+
     return result;
   },
 };

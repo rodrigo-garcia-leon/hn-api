@@ -7,6 +7,8 @@
     "start": "node src/server.js",
     "start:dev": "NODE_ENV=dev yarn start",
     "start:docker": "docker run rodrigogarcialeon/hn-api --env NODE_ENV=dev",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "debug": "NODE_OPTIONS=--inspect-brk NODE_ENV=dev node src/server.js",
     "lint": "yarn lint:eslint && yarn lint:prettier",
     "format": "yarn format:eslint && yarn format:prettier",
