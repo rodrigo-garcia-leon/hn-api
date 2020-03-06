@@ -3,9 +3,32 @@ const mount = require('koa-mount');
 const { buildSchema } = require('graphql');
 const graphqlHTTP = require('koa-graphql');
 const cors = require('@koa/cors');
+const winston = require('winston');
+
+const { LoggingWinston } = require('@google-cloud/logging-winston');
 const { fetchList, fetchStory } = require('./data');
 
 const app = new Koa();
+
+// logging
+const logger = winston.createLogger({
+  transports: [
+    new winston.transports.File({ filename: 'error.log', level: 'error' }),
+    new winston.transports.File({ filename: 'combined.log' }),
+  ],
+});
+
+if (process.env.NODE_ENV === 'dev') {
+  logger.add(new winston.transports.Console());
+} else {
+  logger.add(new LoggingWinston());
+}
+
+app.use(async (ctx, next) => {
+  await next();
+
+  logger.info(JSON.stringify(ctx));
+});
 
 // cors
 const ACCESS_CONTROL_ALLOW_ORIGIN_DEV = 'http://localhost';
@@ -25,8 +48,8 @@ const healthCheck = new Koa();
 
 healthCheck.use(async (ctx, next) => {
   await next();
+
   ctx.status = 200;
-  // console.log(ctx);
 });
 
 app.use(mount('/', healthCheck));
