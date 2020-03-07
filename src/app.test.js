@@ -40,7 +40,7 @@ describe('app', () => {
       }
     `;
 
-    const response = await fetch(`${BASE_URL}graphql`, {
+    const response = await fetch(`${BASE_URL}hn-api/graphql`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

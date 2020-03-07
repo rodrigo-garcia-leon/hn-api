@@ -110,7 +110,7 @@ const root = {
 
 app.use(
   mount(
-    '/graphql',
+    '/hn-api/graphql',
     graphqlHTTP({
       schema,
       rootValue: root,
