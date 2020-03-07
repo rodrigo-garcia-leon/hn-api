@@ -65,6 +65,26 @@ const TEST_ITEMS = {
 };
 
 const fetchItem = jest.fn().mockImplementation(url => TEST_ITEMS[url]);
+function queryListResult(initialStories, addTypename = false) {
+  const KEYS = ['id', 'by', 'score', 'time', 'title'];
+
+  const stories = initialStories
+    .map(story => Object.fromEntries(Object.entries(story).filter(([key]) => KEYS.includes(key))))
+    .map(story => (addTypename ? { __typename: 'Story', ...story } : story));
+  const list = {
+    stories,
+  };
+
+  if (addTypename) {
+    list.__typename = 'List';
+  }
+
+  return {
+    data: {
+      list,
+    },
+  };
+}
 
 module.exports = {
   TEST_LIST_TOP,
@@ -72,4 +92,5 @@ module.exports = {
   TEST_STORY_22089546,
   TEST_STORY_22089166,
   fetchItem,
+  queryListResult,
 };

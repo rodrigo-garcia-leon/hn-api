@@ -1,7 +1,12 @@
 jest.mock('./network');
 
 const fetch = require('node-fetch');
-const { TEST_STORY_22069310, TEST_STORY_22089546, TEST_STORY_22089166 } = require('./network');
+const {
+  TEST_STORY_22069310,
+  TEST_STORY_22089546,
+  TEST_STORY_22089166,
+  queryListResult,
+} = require('./network');
 const { app } = require('./app');
 
 describe('app', () => {
@@ -49,19 +54,8 @@ describe('app', () => {
     });
     const json = await response.json();
 
-    const KEYS = ['id', 'by', 'score', 'time', 'title'];
-    const TEST_STORIES = [
-      TEST_STORY_22069310,
-      TEST_STORY_22089546,
-      TEST_STORY_22089166,
-    ].map(story => Object.fromEntries(Object.entries(story).filter(([key]) => KEYS.includes(key))));
+    const TEST_STORIES = [TEST_STORY_22069310, TEST_STORY_22089546, TEST_STORY_22089166];
 
-    expect(json).toStrictEqual({
-      data: {
-        list: {
-          stories: TEST_STORIES,
-        },
-      },
-    });
+    expect(json).toStrictEqual(queryListResult(TEST_STORIES));
   });
 });
