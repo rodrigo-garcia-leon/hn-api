@@ -4,7 +4,7 @@
   "description": "Hacker News API using GraphQL",
   "main": "index.js",
   "scripts": {
-    "start": "node src/app.js",
+    "start": "pm2 start src/app.js --watch --no-daemon",
     "start:dev": "NODE_ENV=dev yarn start",
     "start:docker": "docker run rodrigogarcialeon/hn-api --env NODE_ENV=dev",
     "test": "jest",
@@ -40,6 +40,7 @@
     "husky": "^4.2.3",
     "jest": "^25.1.0",
     "lint-staged": "^10.0.8",
+    "pm2": "^4.2.3",
     "prettier": "^1.19.1"
   },
   "eslintConfig": {
