@@ -1,9 +1,9 @@
 jest.mock('node-fetch');
 
 const fetch = require('node-fetch');
-const { fetchItem } = require('./network');
+const { fetchData } = require('./network');
 
-describe('fetchItem', () => {
+describe('fetchData', () => {
   let errorSpy;
 
   beforeEach(() => {
@@ -18,7 +18,7 @@ describe('fetchItem', () => {
   test('ok', async () => {
     fetch.mockReturnValue(Promise.resolve({ json: () => Promise.resolve({ id: 1 }) }));
 
-    const result = await fetchItem('url');
+    const result = await fetchData('url');
 
     expect(result).toStrictEqual({ id: 1 });
     expect(fetch).toBeCalledTimes(1);
@@ -31,7 +31,7 @@ describe('fetchItem', () => {
       throw new Error();
     });
 
-    const result = await fetchItem('url');
+    const result = await fetchData('url');
 
     expect(result).toBeUndefined();
     expect(fetch).toBeCalledTimes(1);

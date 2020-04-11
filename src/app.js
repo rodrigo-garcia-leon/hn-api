@@ -6,7 +6,7 @@ const cors = require('@koa/cors');
 const winston = require('winston');
 
 const { LoggingWinston } = require('@google-cloud/logging-winston');
-const { fetchList, fetchStory } = require('./data');
+const { fetchList, fetchItem } = require('./data');
 
 const app = new Koa();
 
@@ -60,7 +60,8 @@ const PAGE_SIZE = 30;
 const schema = buildSchema(`
   type Query {
     list(id: String, page: Int):  List
-    story(id: String): Story
+    story(id: Int): Story
+    comment(id: Int): Comment
   }
 
   type List {
@@ -70,17 +71,29 @@ const schema = buildSchema(`
   type Story {
     by: String
     descendants: Int
-    id: String
+    id: Int
     kids: [Int]
     score: Int
     time: Int
     title: String
     type: String
     url: String
+    comments: [Comment]
+  }
+
+  type Comment {
+    by: String
+    id: Int
+    kids: [Int]
+    parent: Int
+    text: String
+    time: Int
+    type: String
+    comments: [Comment]
   }
 `);
 
-const storyMemo = {};
+const itemMemo = {};
 
 const root = {
   async list({ id, page }) {
@@ -97,12 +110,30 @@ const root = {
     };
   },
   async story({ id }) {
-    if (Object.keys(storyMemo).includes(id.toString())) {
-      return storyMemo[id];
+    if (Object.keys(itemMemo).includes(id.toString())) {
+      return itemMemo[id];
     }
 
-    const result = await fetchStory(id);
-    storyMemo[id] = result;
+    const result = await fetchItem(id);
+    result.kids = result.kids || [];
+    result.comments = await Promise.all(
+      result.kids.map(commentId => this.comment({ id: commentId })),
+    );
+    itemMemo[id.toString()] = result;
+
+    return result;
+  },
+  async comment({ id }) {
+    if (Object.keys(itemMemo).includes(id.toString())) {
+      return itemMemo[id];
+    }
+
+    const result = await fetchItem(id);
+    result.kids = result.kids || [];
+    result.comments = await Promise.all(
+      result.kids.map(commentId => this.comment({ id: commentId })),
+    );
+    itemMemo[id.toString()] = result;
 
     return result;
   },

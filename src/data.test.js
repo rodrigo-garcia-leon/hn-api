@@ -1,26 +1,26 @@
 jest.mock('./network');
 
-const { fetchItem, TEST_LIST_TOP, TEST_STORY_22069310 } = require('./network');
-const { fetchList, fetchStory } = require('./data');
+const { fetchData, TEST_LIST_TOP, TEST_STORY_22069310 } = require('./network');
+const { fetchList, fetchItem } = require('./data');
 
 describe('data', () => {
   afterEach(() => {
-    fetchItem.mockClear();
+    fetchData.mockClear();
   });
 
   test('fetchList', async () => {
     const response = await fetchList('top');
 
     expect(response).toBe(TEST_LIST_TOP);
-    expect(fetchItem).toBeCalledTimes(1);
-    expect(fetchItem).toBeCalledWith('https://hacker-news.firebaseio.com/v0/topstories.json');
+    expect(fetchData).toBeCalledTimes(1);
+    expect(fetchData).toBeCalledWith('https://hacker-news.firebaseio.com/v0/topstories.json');
   });
 
-  test('fetchStory', async () => {
-    const response = await fetchStory('22069310');
+  test('fetchItem', async () => {
+    const response = await fetchItem(22069310);
 
     expect(response).toBe(TEST_STORY_22069310);
-    expect(fetchItem).toBeCalledTimes(1);
-    expect(fetchItem).toBeCalledWith('https://hacker-news.firebaseio.com/v0/item/22069310.json');
+    expect(fetchData).toBeCalledTimes(1);
+    expect(fetchData).toBeCalledWith('https://hacker-news.firebaseio.com/v0/item/22069310.json');
   });
 });

@@ -6,6 +6,7 @@ const {
   TEST_STORY_22089546,
   TEST_STORY_22089166,
   queryListResult,
+  queryStoryResult,
 } = require('./network');
 const { app } = require('./app');
 
@@ -57,5 +58,39 @@ describe('app', () => {
     const TEST_STORIES = [TEST_STORY_22069310, TEST_STORY_22089546, TEST_STORY_22089166];
 
     expect(json).toStrictEqual(queryListResult(TEST_STORIES));
+  });
+
+  test('story 22069310', async () => {
+    const QUERY = `
+      {
+        story(id: 22069310) {
+          id
+          title
+          comments {
+            id
+            by
+            time
+            text
+            comments {
+              id
+              by
+              time
+              text
+            }
+          }
+        }
+      }
+    `;
+
+    const response = await fetch(`${BASE_URL}hn-api/graphql`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query: QUERY }),
+    });
+    const json = await response.json();
+
+    expect(json).toStrictEqual(queryStoryResult(TEST_STORY_22069310));
   });
 });

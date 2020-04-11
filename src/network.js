@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-const fetchItem = async url => {
+const fetchData = async url => {
   let json;
 
   try {
@@ -15,5 +15,5 @@ const fetchItem = async url => {
 };
 
 module.exports = {
-  fetchItem,
+  fetchData,
 };
