@@ -36,7 +36,7 @@ const ACCESS_CONTROL_ALLOW_ORIGIN_PRD = 'https://hn-app.rodrigogarcia.me';
 
 app.use(
   cors({
-    'Access-Control-Allow-Origin':
+    origin:
       process.env.NODE_ENV === 'dev'
         ? ACCESS_CONTROL_ALLOW_ORIGIN_DEV
         : ACCESS_CONTROL_ALLOW_ORIGIN_PRD,
