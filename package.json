@@ -4,9 +4,10 @@
   "description": "Hacker News API using GraphQL",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start src/app.js --watch --no-daemon",
-    "start:dev": "NODE_ENV=dev yarn start",
+    "start": "pm2 start src/app.js",
+    "start:dev": "NODE_ENV=dev yarn start -- --watch --no-daemon",
     "start:docker": "docker run rodrigogarcialeon/hn-api --env NODE_ENV=dev",
+    "stop": "pm2 stop src/app.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "debug": "NODE_OPTIONS=--inspect-brk NODE_ENV=dev node src/server.js",
